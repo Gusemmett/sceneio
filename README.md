@@ -12,31 +12,10 @@ pip install -e .
 ### Quick start: build a scene from a video
 
 ```python
-import time, numpy as np
-import rerun as rr
-from sceneio.api import SceneIO
 
-# Derive per-frame timestamps (ns) from the media
-av = rr.AssetVideo(path="video.mp4")
-vts_ns = av.read_frame_timestamps_nanos()
-base = time.time_ns(); v0 = vts_ns[0]
-t_ns = [base + (ts - v0) for ts in vts_ns]
-video_ts_ns = [ts - v0 for ts in vts_ns]
-
-# Simple intrinsics
-width, height = 1920, 1080
-fx, fy = float(width), float(height)
-cx, cy = width / 2.0, height / 2.0
-K = [fx,0,cx,  0,fy,cy,  0,0,1]
 
 scene = SceneIO(root="/scene")
-cam = scene.load_mono_camera(
-    cam_id="cam0",
-    video_path="video.mp4",
-    K=K, width=width, height=height, camera_xyz="RDF",
-)
-cam.add_video_frames(t_ns=np.array(t_ns), video_ts_ns=np.array(video_ts_ns))
-
+cam = scene.load_mono_camera(video_path="video.mp4")
 scene.save("out.rrd", app_id="sceneio_demo", spawn_viewer=False)
 ```
 
@@ -50,21 +29,7 @@ scene = SceneIO(rrd_path="in.rrd")
 print(scene.list_cameras())  # e.g. ['cam0']
 cam = scene.get_camera("cam0")
 
-# Use existing video frame times for this camera
-vf = scene.video_frames
-mask = np.array(vf["entity_path"].to_pylist()) == cam.entity_path
-t_ns = np.array(vf["t_ns"].to_pylist())[mask]
-
-# Append poses (example: simple path in meters)
-t0 = t_ns[0]
-t_s = (t_ns - t0) * 1e-9
-translations = np.stack([
-    0.25 * np.sin(0.7 * t_s),
-    0.0 * t_s,
-    1.0 + 0.10 * np.cos(0.3 * t_s),
-], axis=1).tolist()
-
-cam.add_extrinsics(t_ns=t_ns.tolist(), translation=translations)
+cam.add_extrinsics(t_ns=..., translation=...)
 scene.save("out_with_poses.rrd")
 ```
 
