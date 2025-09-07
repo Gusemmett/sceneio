@@ -1,0 +1,19 @@
+[workspace]
+authors = ["AngusEmmett <gusemmett@gmail.com>"]
+channels = ["conda-forge"]
+name = "sceneio"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.13.7,<3.14"
+rerun-sdk = ">=0.24.1,<0.25"
+opencv = ">=4.12.0,<5"
+pandas = ">=2.3.2,<3"
+polars = ">=1.0.0,<2"
+pyarrow = ">=18.0.0,<19"
+pyserde = ">=0.12.0,<1"
+pytest = ">=7.0,<8"
+numpy = ">=2.0.0,<3"
