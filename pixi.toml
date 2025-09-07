@@ -17,3 +17,6 @@ pyarrow = ">=18.0.0,<19"
 pyserde = ">=0.12.0,<1"
 pytest = ">=7.0,<8"
 numpy = ">=2.0.0,<3"
+
+[pypi-dependencies]
+sceneio = { path = ".", editable = true }

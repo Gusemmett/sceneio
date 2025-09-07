@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.19.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sceneio"
+version = "0.1.0"
+description = "Columnar scene I/O for Rerun recordings (.rrd)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Angus Emmett", email = "gusemmett@gmail.com" },
+]
+dependencies = [
+  "numpy>=1.24",
+  "pyarrow>=12",
+  "rerun-sdk>=0.24.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/angusemmett/sceneio"
+Issues = "https://github.com/angusemmett/sceneio/issues"
+
+[tool.hatch.build]
+include = [
+  "sceneio/**/*",
+  "examples/**/*",
+  "experiments/**/*",
+]
+
