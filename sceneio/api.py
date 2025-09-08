@@ -374,13 +374,17 @@ class SceneIO:
         return paths
 
     def _annotate_stereo_group(self, cam_ids: Sequence[str], group_name: str) -> None:
-        if not cam_ids:
+        if not cam_ids or not self.cameras.num_rows:
             return
-        rows = []
-        for cid in cam_ids:
-            ep = self._paths_for(cid)["cam"]
-            rows.append({"entity_path": ep, "camera_id": cid, "label": None, "stereo_group": group_name})
-        self.cameras = append_rows(self.cameras, rows)
+        
+        # Update existing camera rows with stereo group instead of adding new ones
+        camera_data = self.cameras.to_pylist()
+        for row in camera_data:
+            if row["camera_id"] in cam_ids:
+                row["stereo_group"] = group_name
+        
+        # Rebuild table with updated data
+        self.cameras = pa.Table.from_pylist(camera_data, schema=self.cameras.schema)
 
     def _validate_tables(self) -> None:
         ensure_schema(self.pinhole, PINHOLE_SCHEMA, "pinhole")

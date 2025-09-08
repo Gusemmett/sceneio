@@ -153,17 +153,23 @@ def load_stereo_from_directory(
     except Exception:
         left_pts, right_pts = [], []
 
-    def _map_idx_to_pts(idx_list: List[int], pts: List[int]) -> np.ndarray:
-        if not pts:
+    def _map_idx_to_pts(idx_list: List[int], pts) -> np.ndarray:
+        # Accept list or numpy array; empty -> fallback
+        try:
+            pts_arr = np.asarray(pts, dtype=np.int64)
+        except Exception:
+            pts_arr = np.empty((0,), dtype=np.int64)
+        if pts_arr.size == 0:
             # fallback: index as monotonic surrogate
             return np.array(idx_list if store_frame_index_in_video_ts else list(range(len(idx_list))), dtype=np.int64)
-        base = int(pts[0])
+        base = int(pts_arr[0])
         out = []
+        n = int(pts_arr.shape[0])
         for fi in idx_list:
-            if fi < 0 or fi >= len(pts):
+            if fi < 0 or fi >= n:
                 out.append(0)
             else:
-                out.append(int(pts[fi]) - base)
+                out.append(int(pts_arr[fi]) - base)
         return np.array(out, dtype=np.int64)
 
     left_video_ts_ns = _map_idx_to_pts(left_csv.frame_idx, left_pts)

@@ -108,13 +108,13 @@ def concat_like(tables: Iterable[pa.Table], schema: pa.Schema) -> pa.Table:
     mats = [t for t in tables if t is not None and t.num_rows]
     if not mats:
         return _empty_from_schema(schema)
-    return pa.concat_tables(mats, promote=True)
+    return pa.concat_tables(mats, promote_options='default')
 
 def append_rows(table: pa.Table, rows: List[dict]) -> pa.Table:
     if not rows:
         return table
     batch = pa.Table.from_pylist(rows, schema=table.schema)
-    return pa.concat_tables([table, batch], promote=True)
+    return pa.concat_tables([table, batch], promote_options='default')
 
 __all__ = [
     "SCHEMA_VERSION",
