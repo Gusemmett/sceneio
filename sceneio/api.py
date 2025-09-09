@@ -258,7 +258,7 @@ class SceneIO:
                 "entity_path": cam_path,
                 "t_ns": times[i],
                 "translation": t_list[i],
-                "quaternion_xyzw": q_list[i],
+                "quaternion": q_list[i],
                 "rotation_mat": m_list[i],
                 "relation": r_list[i],
             }

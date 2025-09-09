@@ -3,17 +3,9 @@ sceneio
 
 Columnar scene I/O for Rerun recordings (.rrd).
 
-### Installation
-
-```bash
-pip install -e .
-```
-
 ### Quick start: build a scene from a video
 
 ```python
-
-
 scene = SceneIO(root="/scene")
 cam = scene.load_mono_camera(video_path="video.mp4")
 scene.save("out.rrd", app_id="sceneio_demo", spawn_viewer=False)
@@ -22,9 +14,6 @@ scene.save("out.rrd", app_id="sceneio_demo", spawn_viewer=False)
 ### Load and append to an existing .rrd
 
 ```python
-import numpy as np
-from sceneio.api import SceneIO
-
 scene = SceneIO(rrd_path="in.rrd")
 print(scene.list_cameras())  # e.g. ['cam0']
 cam = scene.get_camera("cam0")
@@ -56,8 +45,3 @@ scene.save("out_with_poses.rrd")
   - `Camera.set_video(...)`
   - `Camera.add_video_frames(...)`
   - `Camera.add_extrinsics(...)`
-
-See the scripts in `examples/` for end-to-end usage:
-- `examples/smoke_test.py`: create a scene from a video and save.
-- `examples/append_test.py`: load a scene, append poses, and save.
-
